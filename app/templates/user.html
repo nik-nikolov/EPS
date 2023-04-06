@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!--<h3>Потребител: {{ current_user.username }}</h3>-->
+<hr>
+<div class="container text-center">
+    <h2>Списък на потребителите</h2>
+</div>
+<form method="POST">
+<div class="table-responsive">
+    <table class="table caption-top table-bordered table-sm border-primary">
+        <thead class="table-dark text-center">
+        <tr>
+            <th>Номер</th>
+            <th>Потребителско име</th>
+            <th>Име</th>
+            <th>Презиме</th>
+            <th>Фамилия</th>
+            <th>Ел.поща</th>
+            <th>Роля</th>
+            <th>Действие</th>
+
+        </tr>
+        </thead>
+
+        {% for user in users %}
+        <!--<div class="user">-->
+        <tbody class="text-center">
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.surname }}</td>
+            <td>{{ user.family }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role }}</td>
+            <td><a href="{{ url_for('edit', id=user.id) }}" class="btn btn-outline-primary" data-toggle="modal" data-target="#modaledit">Редактиране</a>
+                <a href="{{ url_for('delete', id=user.id) }}" class="btn btn-outline-danger"
+                onclick="return confirm('Сигурни ли сте, че искате да изтриете записа ?' )">Изтриване</a>
+            </td>
+        </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+</div>
+<hr>
+{% endblock %}

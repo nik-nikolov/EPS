@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block content %}
+<hr>
+<div class="container text-center">
+    <h2>Въвеждане на данни</h2>
+</div>
+<hr>
+<!--<h3>Потребител: {{ current_user.username }}!</h3>-->
+<form method="POST" class="container-fluid justify-content-start text-center">
+    {{ form.hidden_tag() }}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <b>{{ form.name.label }}</b><br>
+                {{ form.name(size=32) }}<br>
+                {% for error in form.name.errors %}
+                <span style="color:red">{{ error }}</span>
+                {% endfor %}<br>
+            </div>
+            <div class="col">
+                <b>{{ form.surname.label }}</b><br>
+                {{ form.surname(size=32) }}<br>
+                {% for error in form.surname.errors %}
+                <span style="color:red">{{ error }}</span>
+                {% endfor %}<br>
+            </div>
+            <div class="col">
+                <b>{{ form.family.label }}</b><br>
+                {{ form.family(size=32) }}<br>
+                {% for error in form.family.errors %}
+                <span style="color:red">{{ error }}</span>
+                {% endfor %}<br>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <b>{{ form.email.label }}</b><br>
+                {{ form.email(size=32) }}<br>
+                {% for error in form.email.errors %}
+                <span style="color:red">{{ error }}</span>
+                {% endfor %}<br>
+            </div>
+            <div class="col">
+                <b>{{ form.tel.label }}</b><br>
+                {{ form.tel(size=32) }}<br>
+                {% for error in form.tel.errors %}
+                <span style="color:red">{{ error }}</span>
+                {% endfor %}<br>
+            </div>
+            <div class="col">
+                <b>{{ form.egn.label }}</b><br>
+                {{ form.egn(size=32) }}<br>
+                {% for error in form.egn.errors %}
+                <span style="color:red">{{ error }}</span>
+                {% endfor %}<br>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col md-3">
+                <b>{{ form.idcard.label }}</b><br>
+                {{ form.idcard(size=32) }}<br>
+                {% for error in form.idcard.errors %}
+                <span style="color:red">{{ error }}</span>
+                {% endfor %}<br>
+            </div>
+            <div class="col">
+                <b>{{ form.date_of_issue.label }}</b><br>
+                {{ form.date_of_issue(size=32) }}<br>
+                {% for error in form.date_of_issue.errors %}
+                <span style="color:red">{{ error }}</span>
+                {% endfor %}<br>
+            </div>
+            <div class="col">
+                <b>{{ form.issued_by.label }}</b><br>
+                {{ form.issued_by(size=32) }}<br>
+                {% for error in form.issued_by.errors %}
+                <span style="color:red">{{ error }}</span>
+                {% endfor %}<br>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <b>{{ form.position.label }}</b><br>
+                {{ form.position }}<br>
+                {% for error in form.position.errors %}
+                <span style="color:red">{{ error }}</span>
+                {% endfor %}<br>
+            </div>
+            <div class="col">
+                <b>{{ form.vote_section.label }}</b><br>
+                {{ form.vote_section(size=32) }}<br>
+                {% for error in form.vote_section.errors %}
+                <span style="color:red">{{ error }}</span>
+                {% endfor %}<br>
+            </div>
+            <div class="col">
+                <b>{{ form.sum.label }}
+                    {{ form.sum(size=32) }}</b><br>
+                {% for error in form.sum.errors %}
+                <span style="color:red">{{ error }}</span>
+                {% endfor %}<br>
+            </div>
+        </div>
+    </div>
+    <!--{{ form.submit }}
+    <input type="reset" value='Изчистване'>-->
+    <input class="btn btn-outline-success btn-lg" type="submit" value="Запис">
+    <input class="btn btn-outline-secondary btn-lg" type="reset" value="Изчистване">
+</form>
+{% endblock content %}

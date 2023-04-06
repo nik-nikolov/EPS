@@ -1,0 +1,13 @@
+body{
+background-color: #E0EAFC;
+}
+pre {
+  display: block;
+  font-family: monospace;
+  white-space: pre;
+  margin: 1em 0;
+}
+.card{
+    width: 700px;
+    margin:auto;
+}

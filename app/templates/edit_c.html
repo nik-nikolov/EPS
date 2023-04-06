@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block content %}
+<hr>
+<!--<h3>Потребител: {{ current_user.username }}!</h3>-->
+<div class="container text-center">
+    <h2>Редактиране</h2>
+</div>
+<hr>
+<form method="POST" class="container-fluid justify-content-start text-center">
+    {{ form.hidden_tag() }}
+
+    <div class="row">
+        <div class="col">
+            <b>{{ form.name.label }}</b><br>
+            {{ form.name(size=32) }}<br>
+            {% for error in form.name.errors %}
+            <span style="color:red">{{ error }}</span>
+            {% endfor %}<br>
+        </div>
+
+        <div class="col">
+            <b>{{ form.surname.label }}</b><br>
+            {{ form.surname(size=32) }}<br>
+            {% for error in form.surname.errors %}
+            <span style="color:red">{{ error }}</span>
+            {% endfor %}<br>
+        </div>
+
+        <div class="col">
+            <b>{{ form.family.label }}</b><br>
+            {{ form.family(size=32) }}<br>
+            {% for error in form.family.errors %}
+            <span style="color:red">{{ error }}</span>
+            {% endfor %}<br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <b>{{ form.email.label }}</b><br>
+            {{ form.email(size=32) }}<br>
+            {% for error in form.email.errors %}
+            <span style="color:red">{{ error }}</span>
+            {% endfor %}<br>
+        </div>
+
+        <div class="col">
+            <b>{{ form.tel.label }}</b><br>
+            {{ form.tel(size=32) }}<br>
+            {% for error in form.tel.errors %}
+            <span style="color:red">{{ error }}</span>
+            {% endfor %}<br>
+        </div>
+
+        <div class="col">
+            <b>{{ form.egn.label }}</b><br>
+            {{ form.egn(size=32) }}<br>
+            {% for error in form.egn.errors %}
+            <span style="color:red">{{ error }}</span>
+            {% endfor %}<br>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <b>{{ form.idcard.label }}</b><br>
+            {{ form.idcard(size=2) }}<br>
+            {% for error in form.idcard.errors %}
+            <span style="color:red">{{ error }}</span>
+            {% endfor %}<br>
+        </div>
+
+        <div class="col">
+            <b>{{ form.date_of_issue.label }}</b><br>
+            {{ form.date_of_issue(size=32) }}<br>
+            {% for error in form.date_of_issue.errors %}
+            <span style="color:red">{{ error }}</span>
+            {% endfor %}<br>
+        </div>
+
+
+        <div class="col">
+            <b>{{ form.issued_by.label }}</b><br>
+            {{ form.issued_by(size=32) }}<br>
+            {% for error in form.issued_by.errors %}
+            <span style="color:red">{{ error }}</span>
+            {% endfor %}<br>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <b>{{ form.position.label }}</b><br>
+            {{ form.position }}<br>
+            {% for error in form.position.errors %}
+            <span style="color:red">{{ error }}</span>
+            {% endfor %}<br>
+        </div>
+
+        <div class="col">
+            <b>{{ form.vote_section.label }}</b><br>
+            {{ form.vote_section(size=32) }}<br>
+            {% for error in form.vote_section.errors %}
+            <span style="color:red">{{ error }}</span>
+            {% endfor %}<br>
+        </div>
+
+        <div class="col">
+            <b>{{ form.sum.label }}</b><br>
+            {{ form.sum(size=32) }}<br>
+            {% for error in form.sum.errors %}
+            <span style="color:red">{{ error }}</span>
+            {% endfor %}<br><br>
+        </div>
+    </div>
+    <!--{{ form.submit }}-->
+    <input class="btn btn-outline-success btn-lg" type="submit" value="Запис">
+    <a href="{{ url_for('delete_c', id=form.id.data) }}" class="btn btn-outline-danger btn-lg"
+       onclick="return confirm('Сигурни ли сте, че искате да изтриете записа ?' )">Изтриване</a>
+    <a class="btn btn-outline-secondary btn-lg" href="{{ url_for('payment', id=form.id.data) }}">Плащане</a>
+</form>
+{% endblock %}

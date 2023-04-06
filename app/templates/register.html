@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+<hr>
+<div class="container text-center">
+    <h2>Регистрация потребители</h2>
+</div>
+<hr>
+
+<form method="POST" class="container-fluid justify-content-start text-center">
+    {{ form.hidden_tag() }}
+    <div class="row">
+        <div class="col">
+            <b>{{ form.username.label }}</b><br>
+            {{ form.username(size=32) }}<br>
+            {% for error in form.username.errors %}
+            <span style="color:red">{{ error }}</span>
+            {% endfor %}<br>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <b>{{ form.name.label }}</b><br>
+                {{ form.name(size=32) }}<br>
+                {% for error in form.name.errors %}
+                <span style="color:red">{{ error }}</span>
+                {% endfor %}<br>
+            </div>
+            <div class="col">
+                <b>{{ form.surname.label }}</b><br>
+                {{ form.surname(size=32) }}<br>
+                {% for error in form.surname.errors %}
+                <span style="color:red">{{ error }}</span>
+                {% endfor %}<br>
+            </div>
+            <div class="col">
+                <b>{{ form.family.label }}</b><br>
+                {{ form.family(size=32) }}<br>
+                {% for error in form.family.errors %}
+                <span style="color:red">{{ error }}</span>
+                {% endfor %}<br>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <b>{{ form.email.label }}</b><br>
+                {{ form.email(size=32) }}<br>
+                {% for error in form.email.errors %}
+                <span style="color:red">{{ error }}</span>
+                {% endfor %}<br>
+            </div>
+            <div class="col"></div>
+
+            <div class="col">
+                <b>{{ form.role.label }}</b><br>
+                {{ form.role }}<br>
+                {% for error in form.role.errors %}
+                <span style="color:red">{{ error }}</span>
+                {% endfor %}<br>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <b>{{ form.password.label }}</b><br>
+                {{ form.password(size=32) }}<br>
+                {% for error in form.password.errors %}
+                <span style="color:red">{{ error }}</span>
+                {% endfor %}<br>
+            </div>
+            <div class="col">
+            </div>
+            <div class="col">
+                <b>{{ form.password2.label }}</b><br>
+                {{ form.password2(size=32) }}<br>
+                {% for error in form.password2.errors %}
+                <span style="color:red">{{ error }}</span>
+                {% endfor %}<br>
+            </div>
+        </div>
+    </div>
+    <input class="btn btn-outline-primary btn-lg" type="submit" value="Запис">
+    <input class="btn btn-outline-secondary btn-lg" type="reset" value="Изчистване">
+</form>
+
+{% endblock %}
+

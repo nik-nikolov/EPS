@@ -1,0 +1,38 @@
+{% extends "base.html"%}
+
+{% block content %}
+<hr>
+<div class="container text-center">
+    <h2> Впиши се</h2>
+</div>
+<hr>
+<!--<form method="POST" novalidate class="container justify-content-center">-->
+<form method="POST" class="container-fluid justify-content-start text-center">
+    {{ form.hidden_tag() }}
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <b>{{ form.username.label() }}</b><br>
+                {{ form.username(size=32) }}
+            </div>
+        </div>
+         <div class="row">
+            <div class="col">
+                <b>{{ form.password.label() }}</b><br>
+                {{ form.password(size=32) }}
+            </div>
+         </div>
+         <div class="row">
+            <div class="col">
+                {{ form.remember_me() }}
+                {{ form.remember_me.label }}
+            </div>
+         </div>
+        <div class="row">
+                <div class="col">
+        <input class="btn btn-outline-success btn-lg" type="submit" value="Изпрати">
+                </div>
+        </div>
+</form>
+{% endblock %}
