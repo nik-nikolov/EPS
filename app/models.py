@@ -80,12 +80,12 @@ class Citizen(db.Model):
                 flash('Невалиден ЕГН.Моля въведете друг ЕГН.')
                 raise ValidationError('Невалиден ЕГН.Моля въведете друг ЕГН.')
         else:
-            print("ЕГН трябва да е 10-циф(рен")
+            print("ЕГН трябва да е 10-цифрен")
             flash("ЕГН трябва да е 10-цифрен")
             raise ValidationError("ЕГН трябва да е 10-цифрен")
 
 
-def numbers_to_words(number):
+def numbers_to_words(number):  # translate digit to words
     number2word = {'1': "едно", '2': "две", '3': "три", '4': "четири", '5': "пет", '6': "шест",
                    '7': "седем", '8': "осем", '9': "девет", '0': "нула"}
     return " ".join(map(lambda i: number2word[i], str(number)))

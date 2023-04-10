@@ -26,7 +26,7 @@ def index():
                           user_id=current_user.id, date_of_reg=datetime.now())
         try:
             _egn = str(form.egn.data)
-            citizen.check_egn(_egn)
+            citizen.check_egn(_egn)  # check if egn is validated
             db.session.add(citizen)
             db.session.commit()
             db.session.close()
@@ -94,22 +94,16 @@ def user():
 @login_required
 def edit(id):
     user1 = User.query.get_or_404(id)  # execute the query with the primary-key and return an object or error 404
-    print('user1=', user1)
-    print(user1.username, user1.name, user1.surname, user1.family, user1.email)
     form = EditingForm(obj=user1)
     form.populate_obj(user1)
     if request.method == 'POST' and form.validate_on_submit():
         try:
-            # user2 = User(username=form.username.data, name=form.name.data, surname=form.surname.data,
-            #             family=form.family.data, email=form.email.data, role=form.role.data)
             list_username = db.session.query(User.username).all()
-            print(list_username)
-            if len(list_username) != len(set(list_username)):
+            if len(list_username) != len(set(list_username)):  # check if username is duplicate
                 print("Have a duplicates")
                 flash('Това потребителско име вече съществува.Моля въведете друго потребителско име')
                 return render_template('edit_user.html', form=form, title='Editing')
             user1.set_password(form.password.data)
-            print(user1.username, user1.password_hash)
             db.session.merge(user1)
             db.session.flush()
             db.session.commit()
@@ -147,22 +141,17 @@ def edit_c(id=0):
     c = Citizen.query.get_or_404(id)
     _form = EditingCitizenForm(obj=c)
     _form.populate_obj(c)
-    # print(c.egn)
     if request.method == 'POST' and _form.validate_on_submit():
         try:
             list_egn = db.session.query(Citizen.egn).all()
-            print(list_egn)
-            if len(list_egn) != len(set(list_egn)):
+            if len(list_egn) != len(set(list_egn)):  # check if egn is duplicate
                 print("Have a duplicates")
                 flash('Този ЕГН вече съществува.Моля въведете друг ЕГН.')
                 return render_template('edit_c.html', form=_form, title='Editing')
             _egn = str(c.egn)
             c.check_egn(_egn)
             c.date_of_reg = datetime.now()
-            print(_form.date_of_reg.data)
             c.user_id = current_user.id
-            print(current_user.id)
-            print(_form.user_id.data)
             db.session.merge(c)
             db.session.flush()
             db.session.commit()
@@ -174,7 +163,6 @@ def edit_c(id=0):
             db.session.rollback()
             flash('Грешка при записа!', category="danger")
         return redirect(url_for('search'))
-    # print(str(e))
     return render_template('edit_c.html', form=_form, title='Editing_citizen')
 
 
@@ -205,13 +193,10 @@ def payment(id):
     # if request.method == 'POST':
     t = datetime.now()
     today = t.strftime("%d/%m/%Y")
-    # print(today)
     with app.app_context():
         try:
-            # print("form is :", form.data)
             if form.date_of_payment.data:
                 date = form.date_of_payment.data.strftime("%d-%m-%Yг. в %H ч. и %M мин. ")
-                # print("date of payment= ", date)
                 flash('Сумата на лицето' + " " + str(form.name.data) + " " + str(form.surname.data) + " " + str(
                     form.family.data) + " " +
                       'е била изплатена на ' + date + " " '!',
@@ -228,7 +213,6 @@ def payment(id):
                 issued_by = form.issued_by.data
                 vote_section = str(form.vote_section.data)
                 c.date_of_payment = datetime.now()
-                print(c.date_of_payment)
                 _sum = str(form.sum.data)
                 suma = _sum.split('.')
                 digit = int(suma[0])
@@ -253,7 +237,6 @@ def payment(id):
                 data = data.replace('плащане', _sum)
                 data = data.replace('текст', digit)
                 data = data.replace('тстот', digit1)
-                print('form is:', form.data)
                 db.session.merge(c)
                 db.session.flush()
                 db.session.commit()
@@ -274,7 +257,6 @@ def payment(id):
 @login_required
 def printer():
     try:
-        # db.session.close()
         flash('Успешно изплатена сума', category="success")
         os.startfile('test.txt', "print")
         return redirect(url_for('search'))
@@ -306,8 +288,3 @@ def before_request():
     app.permanent_session_lifetime = timedelta(minutes=20)
     flask.session.modified = True
     flask.g.user = flask_login.current_user
-
-# @socketio.on('disconnect')
-# def disconnect_user():
-#    logout_user()
-#    flask.session.pop(None)
