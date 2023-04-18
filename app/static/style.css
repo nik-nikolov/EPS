@@ -3,9 +3,10 @@ background-color: #E0EAFC;
 }
 pre {
   display: block;
-  font-family: monospace;
+  font-family: "Lucid Console", "Courier New";
+  font-size: 11px;
   white-space: pre;
-  margin: 1em 0;
+  margin: 0.1em 0;
 }
 .card{
     width: 700px;

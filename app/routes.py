@@ -1,8 +1,8 @@
-import os
 from datetime import datetime, timedelta
 
 import flask
 import flask_login
+import js2py
 from flask import render_template, redirect, url_for, request, flash
 from flask_login import current_user, logout_user, login_required, login_user
 from werkzeug.urls import url_parse
@@ -58,6 +58,7 @@ def login():
 
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('index'))
@@ -85,6 +86,7 @@ def register():
 
 
 @app.route('/user', methods=['GET', 'POST'])
+@login_required
 def user():
     users = User.query.all()
     return render_template('user.html', users=users)
@@ -217,13 +219,14 @@ def payment(id):
                 suma = _sum.split('.')
                 digit = int(suma[0])
                 digit1 = suma[1]
-                digit = (numbers_to_words(digit))
+                digit = (numbers_to_words(digit))  # convert digits to words
 
-                data = "  =============================================================\n\
+                data = "\n\
+        =============================================================\n\
                 Община ШУМЕН\n\n\t\tРазходен касов ордер\n\n\t\t№........дата г.\n\n\tДа се брои на:име бащино фамилия\n\n\
-        ЕГН:егн лк №.номер изд.на:дат_изд г. от изд_от\n\n\tза учaстие в СИК № секном  сума:плащане лв.\n\n\
-        с думи(текст)лв. и тстот ст.\n\n\n\t Гл.счет:........ Ръковод:......... Касиер:..........\n\n\t\t\t\t\
-                /С.Еюбова/\n\n\tПолучил:.........Счетоводител:...........\n\n\t\t\t\t\t  /В.Христова/\n\n\
+    ЕГН:егн лк №.номер изд.на:дат_изд г. от изд_от\n\n\tза учaстие в СИК № секном  сума:плащане лв.\n\n\
+    с думи(текст)лв. и тстот ст.\n\n\n\t Гл.счет:........ Ръковод:......... Касиер:..........\n\n\t\t\t\t\
+            /С.Еюбова/\n\n\tПолучил:.........Счетоводител:...........\n\n\t\t\t\t\t  /В.Христова/\n\n\
         =============================================================\n"
                 data = data.replace('дата', today)
                 data = data.replace('име', name)
@@ -240,7 +243,7 @@ def payment(id):
                 db.session.merge(c)
                 db.session.flush()
                 db.session.commit()
-                with open("test.txt", mode='w+') as f:
+                with open("text.txt", mode='w+') as f:
                     f.write(data)
                     f.seek(0)
                     content = f.read()
@@ -250,15 +253,33 @@ def payment(id):
             print(e)
             flash('Грешка при  заплащане.Проверете връзката с принтера !', category="danger")
             # return redirect(url_for('payment', form=form, title='Payment')
-            return render_template('payment.html', title='Payment')
+            return render_template('payment_new.html', title='Payment')
 
 
 @app.route('/printer', methods=('GET', 'POST'))
 @login_required
 def printer():
+    # os.startfile('test.txt', "print")
+    with open("text.txt", mode='r') as f:
+        content = f.read()
+        # print(content)
     try:
+        js2py.eval_js('console.log("Hello World!")')
+        js = """
+        function printpage(content) {
+         var text=content
+    myWindow = window.open('', '', 'width=800,height=600');
+    myWindow.innerWidth = screen.width;
+    myWindow.innerHeight = screen.height;
+    myWindow.screenX = 0;
+    myWindow.screenY = 0;
+    myWindow.document.body.innerHTML = text;
+    myWindow.focus();
+    }
+    """
+        context = js2py.eval_js('js(content)')
+        context.execute(js)
         flash('Успешно изплатена сума', category="success")
-        os.startfile('test.txt', "print")
         return redirect(url_for('search'))
     except Exception as e:
         print(str(e))
@@ -283,7 +304,7 @@ def delete_c(id):
 
 
 @app.before_request
-def before_request():
+def before_request():  # manage sessions.If empty 20 min. session is closed.
     flask.session.permanent = True
     app.permanent_session_lifetime = timedelta(minutes=20)
     flask.session.modified = True

@@ -4,13 +4,28 @@
 <hr>
 <form method="POST" class="container-fluid text-center">
     <div class="card text-center">
-        <div class="card-body">
+        <div id="printableArea" , class="card-body">
                 <pre>
-                {{ text }}
+                    {{ text }}
                 </pre>
         </div>
     </div>
-    <a href="{{ url_for('printer') }}" class="btn btn-outline-secondary btn-lg">Принтиране</a>
-
+    <!--<button class='btn btn-outline-secondary btn-lg' onclick="print()">Принтиране</button>-->
+    <!--<a href="javascript:void(0);" onclick="printPageArea('printableArea')">Print</a>-->
+    <!--<input type="button" class='btn btn-outline-secondary btn-lg' value="Принтиране"
+           onclick="printPageArea('printableArea')"/>-->
+    <a class='btn btn-outline-secondary btn-lg' href="{{ url_for('search') }}" onclick="printPageArea('printableArea')">Принтиране</a>
 </form>
+<script>
+    function printPageArea(areaID){
+    var printContent = document.getElementById(areaID).innerHTML;
+    var originalContent = document.body.innerHTML;
+    document.body.innerHTML = printContent;
+    window.print();
+    document.body.innerHTML = originalContent;
+    }
+
+
+</script>
+
 {% endblock %}
