@@ -22,13 +22,9 @@
         <div class="navbar-header">
             <b><a class="navbar-brand" href="#">Voting Payment Application </a></b>
         </div>
-        <div class="row">
-            {% if current_user.is_not_authenticated %}
-            <div class="col">
-                <b><a class="nav-link" href="{{ url_for('login')}}">Login</a></b>
-            </div>
-            {% endif %}
 
+
+        <div class="row">
             {% if current_user.is_authenticated and current_user.role == 'user'%}
             <div class="col">
                 <b><a class="nav-link" href="{{ url_for('index')}}">Главна</a></b>
@@ -39,7 +35,7 @@
             <div class="col">
                 <b><a class="nav-link" href="{{ url_for('logout')}}">Logout</a></b>
             </div>
-            {% else %}
+            {% elif current_user.is_authenticated and current_user.role == 'admin' %}
             <div class="col">
                 <b><a class="nav-link" href="{{ url_for('index')}}">Главна</a></b>
             </div>
@@ -55,7 +51,16 @@
             <div class="col">
                 <b><a class="nav-link" href="{{ url_for('logout')}}">Logout</a></b>
             </div>
-            {% endif %}
+            {% else %}
+            <div class="row">
+                {% if current_user.is_not_authenticated %}
+                <div class="col">
+                    <b><a class="nav-link" href="{{ url_for('login')}}">Login</a></b>
+                </div>
+                {% endif %}
+                {% endif %}
+            </div>
+
         </div>
     </div>
 </div>

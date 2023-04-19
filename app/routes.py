@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 
 import flask
 import flask_login
-import js2py
 from flask import render_template, redirect, url_for, request, flash
 from flask_login import current_user, logout_user, login_required, login_user
 from werkzeug.urls import url_parse
@@ -191,7 +190,6 @@ def search():
 def payment(id):
     c = Citizen.query.get_or_404(id)
     form = CitizenForm(obj=c)
-    # print(form.data)
     # if request.method == 'POST':
     t = datetime.now()
     today = t.strftime("%d/%m/%Y")
@@ -252,39 +250,7 @@ def payment(id):
             db.session.rollback()
             print(e)
             flash('Грешка при  заплащане.Проверете връзката с принтера !', category="danger")
-            # return redirect(url_for('payment', form=form, title='Payment')
             return render_template('payment_new.html', title='Payment')
-
-
-@app.route('/printer', methods=('GET', 'POST'))
-@login_required
-def printer():
-    # os.startfile('test.txt', "print")
-    with open("text.txt", mode='r') as f:
-        content = f.read()
-        # print(content)
-    try:
-        js2py.eval_js('console.log("Hello World!")')
-        js = """
-        function printpage(content) {
-         var text=content
-    myWindow = window.open('', '', 'width=800,height=600');
-    myWindow.innerWidth = screen.width;
-    myWindow.innerHeight = screen.height;
-    myWindow.screenX = 0;
-    myWindow.screenY = 0;
-    myWindow.document.body.innerHTML = text;
-    myWindow.focus();
-    }
-    """
-        context = js2py.eval_js('js(content)')
-        context.execute(js)
-        flash('Успешно изплатена сума', category="success")
-        return redirect(url_for('search'))
-    except Exception as e:
-        print(str(e))
-        flash('Грешка при  заплащане.Проверете връзката с принтера !', category="danger")
-        return render_template('payment.html', title='Payment')
 
 
 @app.route('/delete_c/<id>', methods=('GET', 'POST'))

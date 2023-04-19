@@ -4,16 +4,12 @@
 <hr>
 <form method="POST" class="container-fluid text-center">
     <div class="card text-center">
-        <div id="printableArea" , class="card-body">
+        <div id="printableArea" class="card-body">
                 <pre>
                     {{ text }}
                 </pre>
         </div>
     </div>
-    <!--<button class='btn btn-outline-secondary btn-lg' onclick="print()">Принтиране</button>-->
-    <!--<a href="javascript:void(0);" onclick="printPageArea('printableArea')">Print</a>-->
-    <!--<input type="button" class='btn btn-outline-secondary btn-lg' value="Принтиране"
-           onclick="printPageArea('printableArea')"/>-->
     <a class='btn btn-outline-secondary btn-lg' href="{{ url_for('search') }}" onclick="printPageArea('printableArea')">Принтиране</a>
 </form>
 <script>
