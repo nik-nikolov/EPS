@@ -17,22 +17,23 @@
                 {{ form.username(size=32) }}
             </div>
         </div>
-         <div class="row">
+        <div class="row">
             <div class="col">
                 <b>{{ form.password.label() }}</b><br>
                 {{ form.password(size=32) }}
             </div>
-         </div>
-         <div class="row">
+        </div>
+        <div class="row">
             <div class="col">
                 {{ form.remember_me() }}
                 {{ form.remember_me.label }}
             </div>
-         </div>
-        <div class="row">
-                <div class="col">
-        <input class="btn btn-outline-success btn-lg" type="submit" value="Изпрати">
-                </div>
         </div>
+        <div class="row">
+            <div class="col">
+                <input class="btn btn-outline-success btn-lg" type="submit" value="Изпрати">
+            </div>
+        </div>
+    </div>
 </form>
 {% endblock %}
