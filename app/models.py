@@ -64,6 +64,8 @@ class Citizen(db.Model):
         return '<Citizen {}>'.format(self.name, self.surname, self.family, self.egn)
 
     def check_egn(self, egn):
+        if len(egn) == 8 or len(egn) == 9:
+            egn = egn.zfill(10)  # add 00 or 0 in start on digit
         list_of_ints = [int(x) for x in egn]
         size = len(list_of_ints)
         size_egn = 10
@@ -72,6 +74,7 @@ class Citizen(db.Model):
                    list_of_ints[
                        4] * 10 + list_of_ints[5] * 9 + list_of_ints[6] * 7 + list_of_ints[7] * 3 + list_of_ints[
                        8] * 6
+            print(data)
             data = data % 11
             if data == list_of_ints[9]:
                 print("Validen EGN")

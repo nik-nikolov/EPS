@@ -1,6 +1,10 @@
 import os
+import time
 
 basedir = os.path.abspath(os.path.dirname(__file__))
+# os.environ['TZ'] = 'Europe/Sofia'
+# time.tzset()
+print(time.strftime('%X %x %Z'))
 
 
 class Config(object):

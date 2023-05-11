@@ -21,7 +21,7 @@ def index():
                           egn=form.egn.data, idcard=form.idcard.data, date_of_issue=form.date_of_issue.data,
                           issued_by=form.issued_by.data, position=form.position.data,
                           vote_section=form.vote_section.data,
-                          sum=form.sum.data, email=form.email.data, tel=form.tel.data,
+                          sum=float(form.sum.data), email=form.email.data, tel=form.tel.data,
                           user_id=current_user.id, date_of_reg=datetime.now())
         try:
             _egn = str(form.egn.data)
@@ -190,7 +190,6 @@ def search():
 def payment(id):
     c = Citizen.query.get_or_404(id)
     form = CitizenForm(obj=c)
-    # if request.method == 'POST':
     t = datetime.now()
     today = t.strftime("%d/%m/%Y")
     with app.app_context():
@@ -201,56 +200,76 @@ def payment(id):
                     form.family.data) + " " +
                       'е била изплатена на ' + date + " " '!',
                       category="danger")
-                return redirect(url_for('search'))
-            else:
-                name = form.name.data
-                surname = form.surname.data
-                family = form.family.data
-                egn = str(form.egn.data)
-                idcard = str(form.idcard.data)
-                date_of_issue = form.date_of_issue.data
-                date_of_issue = str(date_of_issue.strftime("%d/%m/%Y"))
-                issued_by = form.issued_by.data
-                vote_section = str(form.vote_section.data)
+            name = form.name.data
+            surname = form.surname.data
+            family = form.family.data
+            egn = str(form.egn.data)
+            if len(egn) == 8 or len(egn) == 9:
+                egn = egn.zfill(10)  # add 00 or 0 in start on digit
+            idcard = str(form.idcard.data)
+            date_of_issue = form.date_of_issue.data
+            date_of_issue = str(date_of_issue.strftime("%d/%m/%Y"))
+            issued_by = form.issued_by.data
+            vote_section = str(form.vote_section.data)
+            if c.date_of_payment is None:
                 c.date_of_payment = datetime.now()
-                _sum = str(form.sum.data)
-                suma = _sum.split('.')
-                digit = int(suma[0])
-                digit1 = suma[1]
-                digit = (numbers_to_words(digit))  # convert digits to words
+            _sum = str(float(form.sum.data))
+            suma = _sum.split('.')
+            digit = int(suma[0])
+            digit1 = suma[1]
+            digit = (numbers_to_words(digit))  # convert digits to words
 
-                data = "\n\
-        =============================================================\n\
-                Община ШУМЕН\n\n\t\tРазходен касов ордер\n\n\t\t№........дата г.\n\n\tДа се брои на:име бащино фамилия\n\n\
-    ЕГН:егн лк №.номер изд.на:дат_изд г. от изд_от\n\n\tза учaстие в СИК № секном  сума:плащане лв.\n\n\
-    с думи(текст)лв. и тстот ст.\n\n\n\t Гл.счет:........ Ръковод:......... Касиер:..........\n\n\t\t\t\t\
-            /С.Еюбова/\n\n\tПолучил:.........Счетоводител:...........\n\n\t\t\t\t\t  /В.Христова/\n\n\
-        =============================================================\n"
-                data = data.replace('дата', today)
-                data = data.replace('име', name)
-                data = data.replace('бащино', surname)
-                data = data.replace('фамилия', family)
-                data = data.replace('егн', egn)
-                data = data.replace('номер', idcard)
-                data = data.replace('дат_изд', date_of_issue)
-                data = data.replace('изд_от', issued_by)
-                data = data.replace('секном', vote_section)
-                data = data.replace('плащане', _sum)
-                data = data.replace('текст', digit)
-                data = data.replace('тстот', digit1)
-                db.session.merge(c)
-                db.session.flush()
-                db.session.commit()
-                with open("text.txt", mode='w+') as f:
-                    f.write(data)
-                    f.seek(0)
-                    content = f.read()
-                return render_template('payment.html', text=content, title='Payment')
+            data = "\n\t\t\t\
+    Община ШУМЕН\n\n\t\t\tРазходен касов ордер\n\t\t\t№........дата г.\n\tДа се брои на:име бащино фамилия\n\
+ЕГН:егн лк №.номер изд.на:дат_изд г. от изд_от\n\tза учaстие в СИК № секном  сума:" + _sum + "лв.\n\
+с думи(текст)лв. и тстот ст.\n\n\t Гл.счет:........ Ръковод:......... Касиер:..........\n\t\t\t\t\t\
+/С.Еюбова/\n\tПолучил:.........\n\t-------------------------\n\t| Дебит | Кредит|  Сума |\n\t\
+-------------------------\n\t\t|  5011 | " + _sum + " |\tСчетоводител:...........\n\t\t\t\t\t  /В.Христова/\n"
+
+            data1 = "\n\
+    Възнаграждение за\t" + t.strftime("%m/%Y") + " на \n\
+име бащино фамилия\t\tЕГН:егн \n\t\
+    *** Начисления *** \n\
+По ведомост: за избори от 1 до 3:\t" + _sum + "лв. \n\t\
+Словом: (текст)лв. и тстот ст. \n\n\
+касово плащане №.4200\t\tПодпис:...... (печат)\n\
+Дата:" + t.strftime(
+                "%d-%m-%Y") + "г.\t\tПодпис:......\n\
+------------------------------------------------------------\n\
+                                  "
+            data = data.replace('дата', today)
+            data = data.replace('име', name)
+            data = data.replace('бащино', surname)
+            data = data.replace('фамилия', family)
+            data = data.replace('егн', egn)
+            data = data.replace('номер', idcard)
+            data = data.replace('дат_изд', date_of_issue)
+            data = data.replace('изд_от', issued_by)
+            data = data.replace('секном', vote_section)
+            data = data.replace('плащане', _sum)
+            data = data.replace('текст', digit)
+            data = data.replace('тстот', digit1)
+            data1 = data1.replace('име', name)
+            data1 = data1.replace('бащино', surname)
+            data1 = data1.replace('фамилия', family)
+            data1 = data1.replace('егн', egn)
+            data1 = data1.replace('плащане', _sum)
+            data1 = data1.replace('текст', digit)
+            data1 = data1.replace('тстот', digit1)
+            db.session.merge(c)
+            db.session.flush()
+            db.session.commit()
+            with open("text.txt", mode='w+') as f:
+                f.write(data)
+                f.write(data1 * 3)
+                f.seek(0)
+                content = f.read()
+            return render_template('payment.html', text=content, title='Payment')
         except Exception as e:
             db.session.rollback()
             print(e)
             flash('Грешка при  заплащане.Проверете връзката с принтера !', category="danger")
-            return render_template('payment_new.html', title='Payment')
+            return render_template('search.html', title='Payment')
 
 
 @app.route('/delete_c/<id>', methods=('GET', 'POST'))

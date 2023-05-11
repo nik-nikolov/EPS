@@ -116,6 +116,6 @@
     <input class="btn btn-outline-success btn-lg" type="submit" value="Запис">
     <a href="{{ url_for('delete_c', id=form.id.data) }}" class="btn btn-outline-danger btn-lg"
        onclick="return confirm('Сигурни ли сте, че искате да изтриете записа ?' )">Изтриване</a>
-    <a class="btn btn-outline-secondary btn-lg" href="{{ url_for('payment', id=form.id.data) }}">Плащане</a>
+    <a href="{{ url_for('payment', id=form.id.data) }}" class="btn btn-outline-secondary btn-lg">Плащане</a>
 </form>
 {% endblock %}
